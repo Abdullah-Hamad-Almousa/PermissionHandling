@@ -17,32 +17,62 @@ class PermissionsViewModel(
     private val controller: PermissionsController
 ) : ViewModel() {
 
-    var state by mutableStateOf(PermissionState.NotDetermined)
+    var audioState by mutableStateOf(PermissionState.NotDetermined)
+        private set
+
+    var cameraState by mutableStateOf(PermissionState.NotDetermined)
+        private set
+
+    var storageState by mutableStateOf(PermissionState.NotDetermined)
+        private set
+
+    var locationState by mutableStateOf(PermissionState.NotDetermined)
         private set
 
     init {
         viewModelScope.launch {
-            state = controller.getPermissionState(Permission.RECORD_AUDIO)
+            audioState = controller.getPermissionState(Permission.RECORD_AUDIO)
+            cameraState = controller.getPermissionState(Permission.CAMERA)
+            storageState = controller.getPermissionState(Permission.STORAGE)
+            locationState = controller.getPermissionState(Permission.LOCATION)
         }
     }
 
-    fun provideOrRequestAudioPermissions() {
-
+    fun request(permission: Permission) {
         viewModelScope.launch {
-
             try {
-                controller.providePermission(Permission.RECORD_AUDIO)
-                state = PermissionState.Granted
+                controller.providePermission(permission)
+                when (permission) {
+                    Permission.RECORD_AUDIO -> audioState = PermissionState.Granted
+                    Permission.CAMERA -> cameraState = PermissionState.Granted
+                    Permission.STORAGE -> storageState = PermissionState.Granted
+                    Permission.LOCATION -> locationState = PermissionState.Granted
+                    else -> {
+                        TODO()
+                    }
+                }
+
             } catch (e: DeniedAlwaysException) {
-                state = PermissionState.DeniedAlways
+                when (permission) {
+                    Permission.RECORD_AUDIO -> audioState = PermissionState.DeniedAlways
+                    Permission.CAMERA -> cameraState = PermissionState.DeniedAlways
+                    Permission.STORAGE -> storageState = PermissionState.DeniedAlways
+                    Permission.LOCATION -> locationState = PermissionState.DeniedAlways
+                    else -> {
+                        TODO()
+                    }
+                }
             } catch (e: DeniedException) {
-                state = PermissionState.Denied
-            } catch (e: RequestCanceledException) {
-                e.printStackTrace()
+                when (permission) {
+                    Permission.RECORD_AUDIO -> audioState = PermissionState.Denied
+                    Permission.CAMERA -> cameraState = PermissionState.Denied
+                    Permission.STORAGE -> storageState = PermissionState.Denied
+                    Permission.LOCATION -> locationState = PermissionState.Denied
+                    else -> {
+                        TODO()
+                    }
+                }
             }
-
         }
-
     }
-
 }

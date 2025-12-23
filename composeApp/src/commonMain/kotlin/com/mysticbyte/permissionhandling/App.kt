@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -19,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mysticbyte.permissionhandling.theme.IdTextApp
 import com.mysticbyte.permissionhandling.viewmodel.PermissionsViewModel
-import dev.icerock.moko.permissions.PermissionState
+import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.compose.BindEffect
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -52,38 +51,38 @@ fun App() {
         ){
 
             Column(
-
-                modifier = Modifier
-                    .fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
-
             ) {
 
-                when(viewModel.state) {
-                    PermissionState.Granted -> {
-                        Text("Record Audio Permission Granted!")
-                    }
-                    PermissionState.DeniedAlways -> {
+                PermissionItem(
+                    label = "Audio Permission",
+                    state = viewModel.audioState,
+                    onRequest = { viewModel.request(Permission.RECORD_AUDIO) },
+                    controller = controller
+                )
 
-                        Text("Permission Was Permanently Declined!")
-                        Button(onClick = {
+                PermissionItem(
+                    label = "Camera Permission",
+                    state = viewModel.cameraState,
+                    onRequest = { viewModel.request(Permission.CAMERA) },
+                    controller = controller
+                )
 
-                            controller.openAppSettings()
+                PermissionItem(
+                    label = "Storage Permission",
+                    state = viewModel.storageState,
+                    onRequest = { viewModel.request(Permission.STORAGE) },
+                    controller = controller
+                )
 
-                        }){
-                            Text("Open App Settings")
-                        }
-                    }
-                    else -> {
-                        Button(onClick = {
-                            viewModel.provideOrRequestAudioPermissions()
-                        }){
-                            Text("Request Permission")
-                        }
-                    }
-                }
-
+                PermissionItem(
+                    label = "Location Permission",
+                    state = viewModel.locationState,
+                    onRequest = { viewModel.request(Permission.LOCATION) },
+                    controller = controller
+                )
             }
 
             Column(
