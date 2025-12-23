@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mysticbyte.permissionhandling.theme.AppColor
 import com.mysticbyte.permissionhandling.theme.IdTextApp
 import com.mysticbyte.permissionhandling.viewmodel.PermissionsViewModel
 import dev.icerock.moko.permissions.Permission
@@ -91,7 +92,7 @@ fun App() {
                 Text(
                     text = IdTextApp.idTextApp,
                     fontSize = 12.sp,
-                    color = Color(0xFF9A9A9A),
+                    color = AppColor.whiteColor,
                     modifier = Modifier.padding(6.dp),
                     textDecoration = TextDecoration.Underline
                 )
