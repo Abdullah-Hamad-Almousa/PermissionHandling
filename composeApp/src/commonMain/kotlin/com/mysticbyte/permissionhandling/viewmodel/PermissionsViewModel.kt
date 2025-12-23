@@ -48,7 +48,7 @@ class PermissionsViewModel(
                     Permission.STORAGE -> storageState = PermissionState.Granted
                     Permission.LOCATION -> locationState = PermissionState.Granted
                     else -> {
-                        TODO()
+                        throw IllegalArgumentException("Unsupported permission: $permission")
                     }
                 }
 
@@ -59,7 +59,7 @@ class PermissionsViewModel(
                     Permission.STORAGE -> storageState = PermissionState.DeniedAlways
                     Permission.LOCATION -> locationState = PermissionState.DeniedAlways
                     else -> {
-                        TODO()
+                        throw IllegalArgumentException("Unsupported permission: $permission")
                     }
                 }
             } catch (e: DeniedException) {
@@ -69,7 +69,7 @@ class PermissionsViewModel(
                     Permission.STORAGE -> storageState = PermissionState.Denied
                     Permission.LOCATION -> locationState = PermissionState.Denied
                     else -> {
-                        TODO()
+                        throw IllegalArgumentException("Unsupported permission: $permission")
                     }
                 }
             }
